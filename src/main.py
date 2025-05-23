@@ -1,14 +1,8 @@
 import os
-from dotenv import load_dotenv
 from mcp.server.fastmcp import FastMCP
 from mcp.server.fastmcp.tools import Tool
 from pydantic import BaseModel
 
-# Load environment variables
-load_dotenv()
-PORT = int(os.environ.get("SERVER_PORT", 3000))
-
-# --- Ping Tool Schema ---
 class PingInput(BaseModel):
     pass
 
@@ -21,7 +15,7 @@ def ping(ping_input: PingInput) -> PingOutput:
 ping_tool = Tool.from_function(
     ping,
     name="ping",
-    description="Health check tool that returns status ok."
+    description="Health check tool"
 )
 
 fastmcp = FastMCP(
@@ -31,5 +25,4 @@ fastmcp = FastMCP(
 
 if __name__ == "__main__":
     import uvicorn
-    print(f"Starting MCP server on port {PORT}...")
-    uvicorn.run(fastmcp.streamable_http_app(), host="0.0.0.0", port=PORT)
+    uvicorn.run(fastmcp.streamable_http_app(), host="0.0.0.0", port=3000)
